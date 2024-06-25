@@ -183,7 +183,7 @@
             btnCancelar.TabIndex = 13;
             btnCancelar.Text = "CANCELAR REGISTRO";
             btnCancelar.UseVisualStyleBackColor = true;
-            btnCancelar.Click += this.btnCancelar_Click;
+            btnCancelar.Click += btnCancelar_Click;
             // 
             // RegistrarFactura
             // 
@@ -205,7 +205,7 @@
             Controls.Add(etiNumero);
             Controls.Add(btnRegistarFactura);
             Name = "RegistrarFactura";
-            Text = "Flat Invoice Reader";
+            Text = "Registrador";
             ResumeLayout(false);
             PerformLayout();
         }

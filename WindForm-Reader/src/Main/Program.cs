@@ -1,3 +1,5 @@
+using WindForm_Reader.src.Views;
+
 namespace WindForm_Reader.src.Main
 {
     internal static class Program
@@ -11,7 +13,7 @@ namespace WindForm_Reader.src.Main
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new RegistrarFactura());
+            Application.Run(new Principal());
         }
     }
 }
