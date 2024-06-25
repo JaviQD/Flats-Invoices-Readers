@@ -14,11 +14,11 @@ namespace WindForm_Reader.src.Services
         private double TotalPagado { get; set; } = 0;
         public double TotalNoPagado { get; set; } = 0;
 
-        public Invoice _Invoice = new Invoice();
+        public Invoice _Modelo = new Invoice();
 
         public void FacturasPagadasEnero()
         {
-            //Hacemos un ciclo para que cada item del arreglo de factura sea pasado a mi nueva _Invoice
+            //Hacemos un ciclo para que cada item del arreglo de factura sea pasado a mi nueva _Modelo
             Console.WriteLine();
             Console.Write("RESPUESTA =>> ");
             foreach (string item in GetFacturas())
@@ -28,9 +28,9 @@ namespace WindForm_Reader.src.Services
 
                 if (SetPosition(Position))
                 {
-                    if (_Invoice.Mes.Equals("Enero"))
+                    if (_Modelo.Mes.Equals("Enero"))
                     {
-                        Console.Write($"'{_Invoice.NumeroFactura}', ");
+                        Console.Write($"'{_Modelo.NumeroFactura}', ");
                     }
                 }
                 else
@@ -42,7 +42,7 @@ namespace WindForm_Reader.src.Services
 
         public void TotalPagadas()
         {
-            //Hacemos un ciclo para que cada item del arreglo de factura sea pasado a mi nueva _Invoice
+            //Hacemos un ciclo para que cada item del arreglo de factura sea pasado a mi nueva _Modelo
             Console.WriteLine();
             Console.Write("RESPUESTA =>> ");
             foreach (string item in GetFacturas())
@@ -52,9 +52,9 @@ namespace WindForm_Reader.src.Services
 
                 if (SetPosition(Position))
                 {
-                    if (_Invoice.Pagadas.Equals("SI"))
+                    if (_Modelo.Pagadas.Equals("SI"))
                     {
-                        TotalPagado += double.Parse(_Invoice.TotalConImpuestos);
+                        TotalPagado += double.Parse(_Modelo.TotalConImpuestos);
                     }
                 }
                 else
@@ -68,7 +68,7 @@ namespace WindForm_Reader.src.Services
 
         public void TotalNoPagadas()
         {
-            //Hacemos un ciclo para que cada item del arreglo de factura sea pasado a mi nueva _Invoice
+            //Hacemos un ciclo para que cada item del arreglo de factura sea pasado a mi nueva _Modelo
             Console.WriteLine();
             Console.Write("RESPUESTA =>> ");
             foreach (string item in GetFacturas())
@@ -78,9 +78,9 @@ namespace WindForm_Reader.src.Services
 
                 if (SetPosition(Position))
                 {
-                    if (_Invoice.Pagadas.Equals("NO"))
+                    if (_Modelo.Pagadas.Equals("NO"))
                     {
-                        TotalNoPagado += double.Parse(_Invoice.TotalConImpuestos);
+                        TotalNoPagado += double.Parse(_Modelo.TotalConImpuestos);
                     }
                 }
                 else
@@ -94,7 +94,7 @@ namespace WindForm_Reader.src.Services
 
         public void FacturasPrimerSemestre()
         {
-            //Hacemos un ciclo para que cada item del arreglo de factura sea pasado a mi nueva _Invoice
+            //Hacemos un ciclo para que cada item del arreglo de factura sea pasado a mi nueva _Modelo
             Console.WriteLine();
             Console.WriteLine("RESPUESTA =>> ");
             foreach (string item in GetFacturas())
@@ -104,9 +104,9 @@ namespace WindForm_Reader.src.Services
 
                 if (SetPosition(Position))
                 {
-                    if (_Invoice.Pagadas.Equals("SI") && Enum.TryParse(_Invoice.Mes, out PrimerSemestre mes))
+                    if (_Modelo.Pagadas.Equals("SI") && Enum.TryParse(_Modelo.Mes, out PrimerSemestre mes))
                     {
-                        Console.WriteLine($"Factura '{_Invoice.NumeroFactura}' del mes '{_Invoice.Mes}'");
+                        Console.WriteLine($"Factura '{_Modelo.NumeroFactura}' del mes '{_Modelo.Mes}'");
                     }
                 }
                 else
@@ -118,7 +118,7 @@ namespace WindForm_Reader.src.Services
 
         public void FacturasSegundoSemestre()
         {
-            //Hacemos un ciclo para que cada item del arreglo de factura sea pasado a mi nueva _Invoice
+            //Hacemos un ciclo para que cada item del arreglo de factura sea pasado a mi nueva _Modelo
             Console.WriteLine();
             Console.WriteLine("RESPUESTA =>> ");
             foreach (string item in GetFacturas())
@@ -128,9 +128,9 @@ namespace WindForm_Reader.src.Services
 
                 if (SetPosition(Position))
                 {
-                    if (_Invoice.Pagadas.Equals("SI") && Enum.TryParse(_Invoice.Mes, out SegundoSemestre mes))
+                    if (_Modelo.Pagadas.Equals("SI") && Enum.TryParse(_Modelo.Mes, out SegundoSemestre mes))
                     {
-                        Console.WriteLine($"Factura '{_Invoice.NumeroFactura}' del mes '{_Invoice.Mes}'");
+                        Console.WriteLine($"Factura '{_Modelo.NumeroFactura}' del mes '{_Modelo.Mes}'");
                     }
                 }
                 else
@@ -201,16 +201,16 @@ namespace WindForm_Reader.src.Services
             "FA030;658350;125086,5;783436,5;Febrero;SI"
         };
 
-        private bool SetPosition(string[] Position)
+        public bool SetPosition(string[] Position)
         {
             if (Position.Length is 6)
             {
-                _Invoice.NumeroFactura = Position[0];
-                _Invoice.MontoTotal = Position[1];
-                _Invoice.Impuestos = Position[2];
-                _Invoice.TotalConImpuestos = Position[3];
-                _Invoice.Mes = Position[4];
-                _Invoice.Pagadas = Position[5];
+                _Modelo.NumeroFactura = Position[0];
+                _Modelo.MontoTotal = Position[1];
+                _Modelo.Impuestos = Position[2];
+                _Modelo.TotalConImpuestos = Position[3];
+                _Modelo.Mes = Position[4];
+                _Modelo.Pagadas = Position[5];
 
                 return true;
             }

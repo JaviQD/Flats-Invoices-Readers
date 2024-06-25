@@ -1,38 +1,54 @@
 using WindForm_Reader.src.Services;
+using WindForm_Reader.src.Views;
 
 namespace WindForm_Reader
 {
     public partial class RegistrarFactura : Form
     {
         private string FlatInvoice = string.Empty;
+        private Principal _Principal;
+        Return _return = new Return();
         private enum EstadoCheck { SI, NO }
 
-        public RegistrarFactura()
+        public RegistrarFactura(Principal principal)
         {
             InitializeComponent();
+            _Principal = principal;
         }
 
         private void btnRegistarFactura_Click(object sender, EventArgs e)
         {
+
+            if (AlreadyExist_NumeroFactura(textNumero.Text))
+            {
+                MessageBox.Show($"La factura '{textNumero.Text}' ya fue registrada previamente",
+                                "Duplicado",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Exclamation);
+                return;
+            }
+
             if (Is_All_OK(sender, e))
             {
                 MessageBox.Show($"Registro exitoso, Factura -> {FlatInvoice}",
-                                "Exitoso",
+                                "Agregada",
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Exclamation);
 
-                CleanAll();
-                FlatInvoice = string.Empty;
+                _Principal.AgregarToDataGrid(FlatInvoice);
 
+                var Pregunta = MessageBox.Show("¿Deseas registrar otra factura?", 
+                                               "Confirmar", 
+                                               MessageBoxButtons.YesNo, 
+                                               MessageBoxIcon.Question);
+                if (Pregunta is DialogResult.Yes)
+                {
+                    CleanAll();
+                    FlatInvoice = string.Empty;
+                }
+                else this.Dispose();
             }
-            else
-            {
-                MessageBox.Show($"Revisa que la informaciond de la factura este bien redactada",
-                                "Error",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Warning);
-                FlatInvoice = string.Empty;
-            }
+            else FlatInvoice = string.Empty;
         }
 
         private bool Is_All_OK(object sender, EventArgs e)
@@ -149,6 +165,30 @@ namespace WindForm_Reader
             #endregion
 
             return true;
+        }
+
+        private bool AlreadyExist_NumeroFactura(string NumeroFactura)
+        {
+            foreach (DataGridViewRow row in _Principal.DataGridFactura.Rows)
+            {
+                if (!row.IsNewRow)
+                {
+                    // Obtener la fila completa como un string
+                    string factura = string.Join(";", row.Cells.Cast<DataGridViewCell>().Select(cell => cell.Value?.ToString() ?? ""));
+
+                    string[] position = factura.Split(';');
+
+                    if (_return.SetPosition(position))
+                    {
+                        if (_return._Modelo.NumeroFactura.Equals(NumeroFactura))
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;       
         }
 
         private void CleanAll()
