@@ -1,5 +1,4 @@
 ﻿using System.Data;
-using System.Windows.Forms;
 using WindForm_Reader.src.Services;
 
 namespace WindForm_Reader.src.Views
@@ -8,15 +7,15 @@ namespace WindForm_Reader.src.Views
     {
         Return _return = new Return();
 
+        public bool CargueOK { get; set; } = false;
+
         public Principal()
         {
             InitializeComponent();
+            this.CenterToScreen();
         }
 
-        private void toolStripMenuItem6_Click(object sender, EventArgs e)
-        {
-            this.Dispose();
-        }
+        private void toolStripMenuItem6_Click(object sender, EventArgs e) => this.Dispose();
 
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
         {
@@ -174,15 +173,17 @@ namespace WindForm_Reader.src.Views
 
                     foreach (string line in lines)
                     {
-                        // Aquí puedes procesar cada línea como desees
-                        // Por ejemplo, agregarla al DataGridView
-                        AgregarFacturaDesdeTexto(line);
+                        if (_return.IsCargue_OK(line)) 
+                        {
+                            AgregarFacturaDesdeTexto(line);  
+                            CargueOK = true;
+                        } 
                     }
 
-                    MessageBox.Show("Archivo cargado exitosamente.", 
-                                    "Éxito",
-                                    MessageBoxButtons.OK, 
-                                    MessageBoxIcon.Information);
+                    if (CargueOK) MessageBox.Show("Archivo cargado exitosamente.",
+                                                  "Éxito",
+                                                  MessageBoxButtons.OK,
+                                                  MessageBoxIcon.Information);
                 }
                 catch (Exception ex)
                 {
@@ -196,8 +197,7 @@ namespace WindForm_Reader.src.Views
             }
         }
 
-        private void AgregarFacturaDesdeTexto(string facturaTexto)
-        {
-        }
+        private void AgregarFacturaDesdeTexto(string facturaTexto) => DataGridFactura.Rows.Add(facturaTexto);
+
     }
 }
