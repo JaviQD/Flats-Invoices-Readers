@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WindForm_Reader.src.Models;
+﻿using WindForm_Reader.src.Models;
 
 namespace WindForm_Reader.src.Services
 {
-    public class Return
+    public class Return : IReturn
     {
         public enum PrimerSemestre { Enero, Febrero, Marzo, Abril, Mayo, Junio };
         public enum SegundoSemestre { Julio, Agosto, Septiembre, Octubre, Noviembre, Diciembre };
@@ -212,6 +207,127 @@ namespace WindForm_Reader.src.Services
                 _Modelo.Mes = Position[4];
                 _Modelo.Pagadas = Position[5];
 
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool IsCargue_OK(string LineaFactura)
+        {
+            string[] position = LineaFactura.Split(';');
+
+            if (SetPosition(position))
+            {
+                #region NumeroFactura
+
+                if (_Modelo.NumeroFactura.Length < 4)
+                {
+                    MessageBox.Show($"El NUMERO de una de las factura a cargar no cumple la longitud maxima",
+                                    "Error",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error);
+                    return false;
+                }
+
+                #endregion
+
+                #region MontoTotal
+
+                if (int.Parse(_Modelo.MontoTotal) <= 0)
+                {
+                    MessageBox.Show($"El MONTO TOTAL de unas de las factura a cargar no puede ser menor o igual a 0",
+                                   "Error",
+                                   MessageBoxButtons.OK,
+                                   MessageBoxIcon.Error);
+                    return false;
+                }
+
+                #endregion
+
+                #region Impuestos
+
+                if (int.Parse(_Modelo.Impuestos) <= 0)
+                {
+                    MessageBox.Show($"El IMPUESTO de unas de las factura a cargar no puede ser menor o igual a 0",
+                                   "Error",
+                                   MessageBoxButtons.OK,
+                                   MessageBoxIcon.Error);
+                    return false;
+                }
+
+                #endregion
+
+                #region TotalConImpuestos
+
+                if (!TotalCuadrado(
+                                    int.Parse(_Modelo.TotalConImpuestos), 
+                                    int.Parse(_Modelo.MontoTotal), 
+                                    int.Parse(_Modelo.Impuestos)))
+                {
+                    MessageBox.Show($"El TOTAL CON IMPUESTO de unas de las factura a cargar no concuerda con la suma de IMPUESTOS y MONTO TOTAL",
+                                    "Error",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error);
+                    return false;
+                }
+
+                #endregion
+
+                #region Mes
+
+                if (!Exist_Mes(_Modelo.Mes))
+                {
+                    MessageBox.Show($"El MES de unas de las factura a cargar no se encuentra en los meses permitidos",
+                                    "Error",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error);
+                    return false;
+                }
+
+                #endregion
+
+                #region Pagadas
+
+                if (!_Modelo.Pagadas.Equals("SI") &&
+                    !_Modelo.Pagadas.Equals("NO"))
+                {
+                    MessageBox.Show($"El PAGO de unas de las factura a cargar no se encuentra en los valores permitidos",
+                                    "Error",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error);
+                    return false;
+                }
+
+                #endregion
+            }
+            else
+            {
+                MessageBox.Show($"El archivo cargado no cumple con los requerimientos para facturas planas",
+                                "Error",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool Exist_Mes(string Mes)
+        {
+            if (Enum.TryParse(Mes, out Return.PrimerSemestre primer) ||
+                Enum.TryParse(Mes, out Return.SegundoSemestre segundo))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool TotalCuadrado(int TotalConImpuesto, int Impuesto, int MontoTotal)
+        {
+            if (TotalConImpuesto != (Impuesto + MontoTotal))
+            {
                 return true;
             }
 

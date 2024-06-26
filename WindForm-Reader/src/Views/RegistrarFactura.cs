@@ -13,6 +13,7 @@ namespace WindForm_Reader
         public RegistrarFactura(Principal principal)
         {
             InitializeComponent();
+            this.CenterToScreen();
             _Principal = principal;
         }
 
@@ -111,11 +112,10 @@ namespace WindForm_Reader
 
             #region TotalConImpuesto
 
-            int TotalConImpuesto = int.Parse(textTotalConImpuestos.Text);
-            int Impuestos = int.Parse(textImpuestos.Text);
-            int MontoTotal = int.Parse(textMontoTotal.Text);
-
-            if (TotalConImpuesto == (Impuestos + MontoTotal))
+            if (_return.TotalCuadrado(
+                                        int.Parse(textTotalConImpuestos.Text),
+                                        int.Parse(textImpuestos.Text),
+                                        int.Parse(textMontoTotal.Text)))
             {
                 FlatInvoice += $"{textTotalConImpuestos.Text};";
             }
@@ -136,12 +136,9 @@ namespace WindForm_Reader
 
             if (ComboMes.SelectedIndex != -1)
             {
-                string MesSeleccionado = ComboMes.SelectedItem.ToString();
-
-                if (Enum.TryParse(MesSeleccionado, out Return.PrimerSemestre primer) ||
-                    Enum.TryParse(MesSeleccionado, out Return.SegundoSemestre segundo))
+                if (_return.Exist_Mes(ComboMes.SelectedItem.ToString()))
                 {
-                    FlatInvoice += $"{MesSeleccionado};";
+                    FlatInvoice += $"{ComboMes.SelectedItem.ToString()};";
                 }
             }
             else

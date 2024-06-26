@@ -31,5 +31,13 @@
         /// Metodo que imprime todos los resultados
         /// </summary>
         void PrintResult();
+
+        //Validaciones en cargue de txt
+
+        bool IsCargue_OK(string LineaFactura);
+
+        bool Exist_Mes(string Mes);
+
+        bool TotalCuadrado(int TotalConImpuesto, int Impuesto, int MontoTotal);
     }
 }
