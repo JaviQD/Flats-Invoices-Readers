@@ -13,7 +13,7 @@ namespace WindForm_Reader
         public RegistrarFactura(Principal principal)
         {
             InitializeComponent();
-            this.CenterToScreen();
+            CenterToScreen();
             _Principal = principal;
         }
 

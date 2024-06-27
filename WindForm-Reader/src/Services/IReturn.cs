@@ -2,42 +2,29 @@
 {
     public interface IReturn
     {
-        /// <summary>
-        /// Metodo que devuelve las facturas pagadas en el mes de enero.
-        /// </summary>
-        void FacturasPagadasEnero();
 
-        /// <summary>
-        /// Metodo que devuelve el total de las facturas pagadas parseado
-        /// </summary>
-        void TotalPagadas();
+        List<string> FacturasPagadas_Enero(List<string> Facturas);
 
-        /// <summary>
-        /// Metodo que devuelve el total de las facturas NO pagadas parseado
-        /// </summary>
-        void TotalNoPagadas();
+        double TotalFacturas_Pagadas(List<string> Facturas);
 
-        /// <summary>
-        /// Metodo que devuelve las facturas pagadas en los primeros 6 meses del anio
-        /// </summary>
-        void FacturasPrimerSemestre();
+        double TotalFacturas_NO_Pagadas(List<string> Facturas);
 
-        /// <summary>
-        /// Metodo que devuelve las facturas pagadas en los Ultimos 6 meses del anio
-        /// </summary>
-        void FacturasSegundoSemestre();
+        List<string> Facturas_Pagadas_PrimerSemestre(List<string> Facturas);
 
-        /// <summary>
-        /// Metodo que imprime todos los resultados
-        /// </summary>
-        void PrintResult();
+        List<string> Facturas_Pagadas_SegundoSemestre(List<string> Facturas);
 
-        //Validaciones en cargue de txt
+        bool SetPosition(string[] Position);
 
         bool IsCargue_OK(string LineaFactura);
 
         bool Exist_Mes(string Mes);
 
         bool TotalCuadrado(int TotalConImpuesto, int Impuesto, int MontoTotal);
+
+        void Pregunta1(List<string> Facturas);
+        void Pregunta2(List<string> Facturas);
+        void Pregunta3(List<string> Facturas);
+        void Pregunta4(List<string> Facturas);
+        void Pregunta5(List<string> Facturas);
     }
 }
