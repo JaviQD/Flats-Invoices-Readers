@@ -7,7 +7,7 @@ namespace WindForm_Reader.src.Services
         public enum PrimerSemestre { Enero, Febrero, Marzo, Abril, Mayo, Junio };
         public enum SegundoSemestre { Julio, Agosto, Septiembre, Octubre, Noviembre, Diciembre };
         private double TotalPagado { get; set; } = 0;
-        public double TotalNoPagado { get; set; } = 0;
+        private double TotalNoPagado { get; set; } = 0;
 
         public Invoice _Modelo = new Invoice();
 
@@ -37,7 +37,7 @@ namespace WindForm_Reader.src.Services
             { 
                 string[] Position = item.Split(';');
 
-                if (SetPosition(Position))
+                if (SetPosition(Position)) 
                 {
                     if (_Modelo.Pagadas.Equals("SI"))
                     {
@@ -73,7 +73,6 @@ namespace WindForm_Reader.src.Services
 
             foreach (string item in Facturas)
             {
-                //Divido la factura en subcadenas usando el dilimitador ;
                 string[] Position = item.Split(';');
 
                 if (SetPosition(Position))
@@ -95,7 +94,6 @@ namespace WindForm_Reader.src.Services
 
             foreach (string item in Facturas)
             {
-                //Divido la factura en subcadenas usando el dilimitador ;
                 string[] Position = item.Split(';');
 
                 if (SetPosition(Position))
@@ -230,23 +228,45 @@ namespace WindForm_Reader.src.Services
 
         public bool Exist_Mes(string Mes)
         {
-            if (Enum.TryParse(Mes, out Return.PrimerSemestre primer) ||
-                Enum.TryParse(Mes, out Return.SegundoSemestre segundo))
-            {
-                return true;
-            }
-
-            return false;
+            return Enum.TryParse(Mes, out Return.PrimerSemestre primer) || Enum.TryParse(Mes, out Return.SegundoSemestre segundo);
         }
 
         public bool TotalCuadrado(int TotalConImpuesto, int Impuesto, int MontoTotal)
         {
-            if (TotalConImpuesto == (Impuesto + MontoTotal))
+            return TotalConImpuesto == (Impuesto + MontoTotal);
+        }
+
+        public void Remove_From_List(DataGridView DataGrid, List<DataGridViewRow> Lista, string Pago)
+        {
+            if (Pago is not "SI" && Pago is not "NO")
             {
-                return true;
+                MessageBox.Show("Pago no soportado",
+                                "Error",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+                return;
             }
 
-            return false;
+            foreach (DataGridViewRow row in DataGrid.Rows)
+            {
+                if (!row.IsNewRow)
+                {
+                    // Obtener la fila completa como un string
+                    string factura = string.Join(";", row.Cells.Cast<DataGridViewCell>().Select(cell => cell.Value?.ToString() ?? ""));
+
+                    string[] position = factura.Split(';');
+
+                    if (SetPosition(position))
+                    {
+                        if (_Modelo.Pagadas.Equals(Pago))
+                        {
+                            Lista.Add(row);
+                        }
+                    }
+                }
+            }
+
+            Lista.ForEach(row => DataGrid.Rows.Remove(row));
         }
 
         public void Pregunta1(List<string> Facturas)
@@ -339,6 +359,6 @@ namespace WindForm_Reader.src.Services
                                  "Facturas Pagadas",
                                  MessageBoxButtons.OK,
                                  MessageBoxIcon.Information);
-        }
+        }  
     }
 }

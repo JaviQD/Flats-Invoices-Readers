@@ -21,6 +21,8 @@
 
         bool TotalCuadrado(int TotalConImpuesto, int Impuesto, int MontoTotal);
 
+        void Remove_From_List(DataGridView DataGrid, List<DataGridViewRow> Lista, string Pago);
+
         void Pregunta1(List<string> Facturas);
         void Pregunta2(List<string> Facturas);
         void Pregunta3(List<string> Facturas);
