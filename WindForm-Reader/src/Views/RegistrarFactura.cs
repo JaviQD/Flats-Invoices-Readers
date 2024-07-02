@@ -7,6 +7,7 @@ namespace WindForm_Reader
     {
         private string FlatInvoice = string.Empty;
         private Principal _Principal;
+
         Return _return = new Return();
         private enum EstadoCheck { SI, NO }
 
@@ -42,12 +43,13 @@ namespace WindForm_Reader
                                                "Confirmar", 
                                                MessageBoxButtons.YesNo, 
                                                MessageBoxIcon.Question);
+
                 if (Pregunta is DialogResult.Yes)
                 {
                     CleanAll();
                     FlatInvoice = string.Empty;
                 }
-                else this.Dispose();
+                else Dispose();
             }
             else FlatInvoice = string.Empty;
         }
@@ -206,9 +208,6 @@ namespace WindForm_Reader
             CheckPagado.Checked = false;
         }
 
-        private void btnCancelar_Click(object sender, EventArgs e)
-        {
-            this.Dispose();
-        }
+        private void btnCancelar_Click(object sender, EventArgs e) => Dispose();
     }
 }

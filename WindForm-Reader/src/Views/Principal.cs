@@ -1,6 +1,5 @@
 ﻿using System.Data;
 using WindForm_Reader.src.Services;
-using static WindForm_Reader.src.Services.Return;
 
 namespace WindForm_Reader.src.Views
 {
@@ -23,11 +22,7 @@ namespace WindForm_Reader.src.Views
 
         private void toolStripMenuItem6_Click(object sender, EventArgs e) => this.Dispose();
 
-        private void toolStripMenuItem2_Click(object sender, EventArgs e)
-        {
-            var Registrar = new RegistrarFactura(this);
-            Registrar.ShowDialog();
-        }
+        private void toolStripMenuItem2_Click(object sender, EventArgs e) => new RegistrarFactura(this).ShowDialog();
 
         private void MenuItemGuardar_Click(object sender, EventArgs e)
         {
@@ -64,9 +59,9 @@ namespace WindForm_Reader.src.Views
                     }
 
                     MessageBox.Show("Facturas guardadas exitosamente.",
-                                   "Éxito",
-                                   MessageBoxButtons.OK,
-                                   MessageBoxIcon.Information);
+                                    "Éxito",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Information);
                 }
                 catch (Exception ex)
                 {
@@ -97,31 +92,7 @@ namespace WindForm_Reader.src.Views
                 return;
             }
 
-            var filas_A_Eliminar = new List<DataGridViewRow>();
-
-            foreach (DataGridViewRow row in DataGridFactura.Rows)
-            {
-                if (!row.IsNewRow)
-                {
-                    // Obtener la fila completa como un string
-                    string factura = string.Join(";", row.Cells.Cast<DataGridViewCell>().Select(cell => cell.Value?.ToString() ?? ""));
-
-                    string[] position = factura.Split(';');
-
-                    if (_return.SetPosition(position))
-                    {
-                        if (_return._Modelo.Pagadas.Equals("NO"))
-                        {
-                            filas_A_Eliminar.Add(row);
-                        }
-                    }
-                }
-            }
-
-            foreach (var row in filas_A_Eliminar)
-            {
-                DataGridFactura.Rows.Remove(row);
-            }
+            _return.Remove_From_List(DataGridFactura, new List<DataGridViewRow>(), "NO");
         }
 
         private void btnLimpiarPagas_Click(object sender, EventArgs e)
@@ -136,31 +107,7 @@ namespace WindForm_Reader.src.Views
                 return;
             }
 
-            var filas_A_Eliminar = new List<DataGridViewRow>();
-
-            foreach (DataGridViewRow row in DataGridFactura.Rows)
-            {
-                if (!row.IsNewRow)
-                {
-                    // Obtener la fila completa como un string
-                    string factura = string.Join(";", row.Cells.Cast<DataGridViewCell>().Select(cell => cell.Value?.ToString() ?? ""));
-
-                    string[] position = factura.Split(';');
-
-                    if (_return.SetPosition(position))
-                    {
-                        if (_return._Modelo.Pagadas.Equals("SI"))
-                        {
-                            filas_A_Eliminar.Add(row);
-                        }
-                    }
-                }
-            }
-
-            foreach (var row in filas_A_Eliminar)
-            {
-                DataGridFactura.Rows.Remove(row);
-            }
+            _return.Remove_From_List(DataGridFactura, new List<DataGridViewRow>(), "SI");
         }
 
         private void MenuItemCargar_Click(object sender, EventArgs e)
@@ -194,7 +141,7 @@ namespace WindForm_Reader.src.Views
                         }
                     }
 
-                    if (FacturasDuplicadas.Count > 1)
+                    if (FacturasDuplicadas.Count >= 1)
                     {
                         string facturasTexto = string.Join("\n", FacturasDuplicadas);
 
@@ -219,8 +166,7 @@ namespace WindForm_Reader.src.Views
                     throw;
                 }
 
-                FacturasDuplicadas.Clear(); 
-                Cargados = 0;
+                Reset(1);
             }
         }
 
@@ -255,7 +201,7 @@ namespace WindForm_Reader.src.Views
 
                 _return.Pregunta1(ListaFacuras);
 
-                ListaFacuras.Clear();
+                Reset(2);
             }
         }
 
@@ -279,7 +225,7 @@ namespace WindForm_Reader.src.Views
 
                 if (ListaFacuras.Count is 0)
                 {
-                    MessageBox.Show("No hay Facturas a leer para responder la pregunta 1",
+                    MessageBox.Show("No hay Facturas a leer para responder la pregunta 2",
                                     "Advertencia",
                                     MessageBoxButtons.OK,
                                     MessageBoxIcon.Warning);
@@ -288,7 +234,7 @@ namespace WindForm_Reader.src.Views
 
                 _return.Pregunta2(ListaFacuras);
 
-                ListaFacuras.Clear();
+                Reset(2);
             }
         }
 
@@ -312,7 +258,7 @@ namespace WindForm_Reader.src.Views
 
                 if (ListaFacuras.Count is 0)
                 {
-                    MessageBox.Show("No hay Facturas a leer para responder la pregunta 1",
+                    MessageBox.Show("No hay Facturas a leer para responder la pregunta 3",
                                     "Advertencia",
                                     MessageBoxButtons.OK,
                                     MessageBoxIcon.Warning);
@@ -321,7 +267,7 @@ namespace WindForm_Reader.src.Views
 
                 _return.Pregunta3(ListaFacuras);
 
-                ListaFacuras.Clear();
+                Reset(2);
             }
         }
 
@@ -345,7 +291,7 @@ namespace WindForm_Reader.src.Views
 
                 if (ListaFacuras.Count is 0)
                 {
-                    MessageBox.Show("No hay Facturas a leer para responder la pregunta 1",
+                    MessageBox.Show("No hay Facturas a leer para responder la pregunta 4",
                                     "Advertencia",
                                     MessageBoxButtons.OK,
                                     MessageBoxIcon.Warning);
@@ -354,7 +300,7 @@ namespace WindForm_Reader.src.Views
 
                 _return.Pregunta4(ListaFacuras);
 
-                ListaFacuras.Clear();
+                Reset(2);
             }
         }
 
@@ -378,7 +324,7 @@ namespace WindForm_Reader.src.Views
 
                 if (ListaFacuras.Count is 0)
                 {
-                    MessageBox.Show("No hay Facturas a leer para responder la pregunta 1",
+                    MessageBox.Show("No hay Facturas a leer para responder la pregunta 5",
                                     "Advertencia",
                                     MessageBoxButtons.OK,
                                     MessageBoxIcon.Warning);
@@ -387,7 +333,7 @@ namespace WindForm_Reader.src.Views
 
                 _return.Pregunta5(ListaFacuras);
 
-                ListaFacuras.Clear();
+                Reset(2);
             }
         }
 
@@ -416,5 +362,16 @@ namespace WindForm_Reader.src.Views
 
             return true;
         }
+
+        private void Reset(int hacer)
+        {
+            if (hacer is 1)
+            {
+                FacturasDuplicadas.Clear();
+                Cargados = 0;
+            }
+
+            if(hacer is 2) ListaFacuras.Clear();
+        }       
     }
 }
