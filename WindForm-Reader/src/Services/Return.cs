@@ -11,24 +11,20 @@ namespace WindForm_Reader.src.Services
 
         public Invoice _Modelo = new Invoice();
 
-        public List<string> FacturasPagadas_Enero(List<string> Facturas)
+        public IEnumerable<string> FacturasPagadas_Enero(List<string> Facturas)
         {
-            List<string> PagadasEnero = new List<string>();
-
             foreach (string item in Facturas)
             {
                 string[] Position = item.Split(';');
 
                 if (SetPosition(Position))
                 {
-                    if (_Modelo.Mes.Equals("Enero"))
+                    if (_Modelo.Mes.Equals("Enero") && _Modelo.Pagadas.Equals("SI"))
                     {
-                        PagadasEnero.Add(item);
+                        yield return item;
                     }
                 }
             }
-
-            return PagadasEnero;
         }
 
         public double TotalFacturas_Pagadas(List<string> Facturas)
@@ -67,10 +63,8 @@ namespace WindForm_Reader.src.Services
             return TotalNoPagado;
         }
 
-        public List<string> Facturas_Pagadas_PrimerSemestre(List<string> Facturas)
+        public IEnumerable<string> Facturas_Pagadas_PrimerSemestre(List<string> Facturas)
         {
-            List<string> _PrimerSemestre = new List<string>();
-
             foreach (string item in Facturas)
             {
                 string[] Position = item.Split(';');
@@ -80,18 +74,14 @@ namespace WindForm_Reader.src.Services
                     if (_Modelo.Pagadas.Equals("SI") && 
                         Enum.TryParse(_Modelo.Mes, out PrimerSemestre mes))
                     {
-                        _PrimerSemestre.Add(item);
+                        yield return item;
                     }
                 }
             }
-
-            return _PrimerSemestre;
         }
 
-        public List<string> Facturas_Pagadas_SegundoSemestre(List<string> Facturas)
+        public IEnumerable<string> Facturas_Pagadas_SegundoSemestre(List<string> Facturas)
         {
-            List<string> _SegundoSemestre = new List<string>();
-
             foreach (string item in Facturas)
             {
                 string[] Position = item.Split(';');
@@ -101,12 +91,10 @@ namespace WindForm_Reader.src.Services
                     if (_Modelo.Pagadas.Equals("SI") &&
                         Enum.TryParse(_Modelo.Mes, out SegundoSemestre mes))
                     {
-                        _SegundoSemestre.Add(item);
+                        yield return item;
                     }
                 }
             }
-
-            return _SegundoSemestre;
         }
 
         public bool SetPosition(string[] Position)
@@ -271,7 +259,7 @@ namespace WindForm_Reader.src.Services
 
         public void Pregunta1(List<string> Facturas)
         {
-            List<string> PagadasEnero = FacturasPagadas_Enero(Facturas);
+            IEnumerable<string> PagadasEnero = FacturasPagadas_Enero(Facturas);
 
             if (PagadasEnero.Any())
             {
@@ -327,7 +315,7 @@ namespace WindForm_Reader.src.Services
 
         public void Pregunta4(List<string> Facturas)
         {
-            List<string> PrimerSemestre = Facturas_Pagadas_PrimerSemestre(Facturas);
+            IEnumerable<string> PrimerSemestre = Facturas_Pagadas_PrimerSemestre(Facturas);
 
             if (PrimerSemestre.Any())
             {
@@ -345,7 +333,7 @@ namespace WindForm_Reader.src.Services
 
         public void Pregunta5(List<string> Facturas)
         {
-            List<string> SegundoSemestre = Facturas_Pagadas_SegundoSemestre(Facturas);
+            IEnumerable<string> SegundoSemestre = Facturas_Pagadas_SegundoSemestre(Facturas);
 
             if (SegundoSemestre.Any())
             {
