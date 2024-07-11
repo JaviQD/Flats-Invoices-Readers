@@ -4,11 +4,7 @@ namespace Console_Reader.src.Main
 {
     public class Runner
     {
-        public static void Main()
-        {
-            IReturn _Return = new Return();
-
-            _Return.PrintResult();
-        }
+        public static IReturn _Return = new Return();
+        public static void Main() => _Return.PrintResult();
     }
 }

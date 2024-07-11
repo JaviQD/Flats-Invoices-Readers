@@ -23,15 +23,13 @@ namespace Console_Reader.src.Services
 
                 if (SetPosition(Position))
                 {
-                    if (_Modelo.Mes.Equals("Enero"))
+                    if (_Modelo.Mes.Equals("Enero") && _Modelo.Pagadas.Equals("SI"))
                     {
                         Console.Write($"'{_Modelo.NumeroFactura}', ");
                     }
                 }
-                else
-                {
-                    Console.WriteLine("La estrutura de el plano esta incompleta o supera los limites");
-                }
+
+                else Console.WriteLine("La estrutura de el plano esta incompleta o supera los limites");
             }
         }
 
@@ -52,10 +50,8 @@ namespace Console_Reader.src.Services
                         TotalPagado += double.Parse(_Modelo.TotalConImpuestos);
                     }
                 }
-                else
-                {
-                    Console.WriteLine("La estrutura de el plano esta incompleta o supera los limites");
-                }
+
+                else Console.WriteLine("La estrutura de el plano esta incompleta o supera los limites");
             }
 
             Console.Write(TotalPagado);
@@ -78,10 +74,8 @@ namespace Console_Reader.src.Services
                         TotalNoPagado += double.Parse(_Modelo.TotalConImpuestos);
                     }
                 }
-                else
-                {
-                    Console.WriteLine("La estrutura de el plano esta incompleta o supera los limites");
-                }
+
+                else Console.WriteLine("La estrutura de el plano esta incompleta o supera los limites");
             }
 
             Console.Write(TotalNoPagado);
@@ -104,10 +98,8 @@ namespace Console_Reader.src.Services
                         Console.WriteLine($"Factura '{_Modelo.NumeroFactura}' del mes '{_Modelo.Mes}'");
                     }
                 }
-                else
-                {
-                    Console.WriteLine("La estrutura de el plano esta incompleta o supera los limites");
-                }
+
+                else Console.WriteLine("La estrutura de el plano esta incompleta o supera los limites");
             }
         }
 
@@ -128,10 +120,8 @@ namespace Console_Reader.src.Services
                         Console.WriteLine($"Factura '{_Modelo.NumeroFactura}' del mes '{_Modelo.Mes}'");
                     }
                 }
-                else
-                {
-                    Console.WriteLine("La estrutura de el plano esta incompleta o supera los limites");
-                }
+
+                else Console.WriteLine("La estrutura de el plano esta incompleta o supera los limites");
             }
         }
 
